@@ -1,0 +1,4 @@
+database:
+  database: snamblog_test
+
+auth-dummy-login: true
