@@ -9,3 +9,11 @@ homeSpecs =
       get HomeR
       statusIs 200
       htmlAnyContain "h2" "Welcome to SnamBlog"
+
+blogSpecs :: Spec
+blogSpecs =
+  yDescribe "These tests describe the blog page" $ do
+  yit "check blog page" $ do
+    get BlogR
+    statusIs 200
+    htmlAnyContain "h2" "Latest Posts"
