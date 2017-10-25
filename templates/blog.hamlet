@@ -1,0 +1,13 @@
+<div .masthead>
+    <div .container>
+        <div .row>
+            <h1 .header>
+                Latest Posts on SnamBlog
+<div .container>
+    <!-- Starting
+        ================================================== -->
+    <div .bs-docs-section>
+        <div .row>
+            <div .col-lg-12>
+                <div .page-header>
+                    <h1 #start>Starting
