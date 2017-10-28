@@ -16,16 +16,13 @@ import Text.Jasmine                (minifym)
 import Yesod.Auth.Dummy
 
 import Yesod.Auth.OpenId           (authOpenId, IdentifierType (Claimed))
+import Yesod.Auth.GoogleEmail2
 import Yesod.Core.Types            (Logger)
 import Yesod.Default.Util          (addStaticContentExternal)
 import qualified Yesod.Core.Unsafe as Unsafe
 import qualified Data.CaseInsensitive as CI
 import qualified Data.Text.Encoding as TE
 
--- | The foundation datatype for your application. This can be a good place to
--- keep settings and values requiring initialization before your application
--- starts running, such as database connections. Every handler will have
--- access to the data present here.
 data App = App
     { appSettings    :: AppSettings
     , appStatic      :: Static -- ^ Settings for static file serving.
@@ -147,9 +144,12 @@ instance Yesod App where
     isAuthorized FaviconR _ = return Authorized
     isAuthorized RobotsR _ = return Authorized
     isAuthorized (StaticR _) _ = return Authorized
-    isAuthorized BlogR _ = return Authorized
+    isAuthorized (ArticleR _) False = return Authorized
 
     isAuthorized ProfileR _ = isAuthenticated
+
+    isAuthorized BlogR _ = isAdmin
+    isAuthorized (ArticleR _) True = isAdmin
 
     -- This function creates static content files in the static folder
     -- and names them based on a hash of their content. This allows
@@ -196,6 +196,7 @@ instance YesodPersist App where
             action
             (appConnPool master)
 
+
 instance YesodAuth App where
     type AuthId App = UserId
 
@@ -216,9 +217,15 @@ instance YesodAuth App where
                 }
 
     -- You can add other plugins like Google Email, email or OAuth here
-    authPlugins app = [authOpenId Claimed []] ++ extraAuthPlugins
+    authPlugins app = [authOpenId Claimed []]
+                      ++ googlePlugins
+                      ++ extraAuthPlugins
         -- Enable authDummy login if enabled.
-        where extraAuthPlugins = [authDummy | appAuthDummyLogin $ appSettings app]
+        where
+          clientId = appClientId $ appSettings app
+          clientSecret = appClientSecret $ appSettings app
+          googlePlugins = maybeToList $ authGoogleEmail <$> clientId <*> clientSecret
+          extraAuthPlugins = [authDummy | appAuthDummyLogin $ appSettings app]
 
     authHttpManager = getHttpManager
 
@@ -229,6 +236,18 @@ isAuthenticated = do
     return $ case muid of
         Nothing -> Unauthorized "You must login to access this page"
         Just _ -> Authorized
+
+isAdmin :: Handler AuthResult
+isAdmin = do
+  muid <- maybeAuth
+  app <- getYesod
+  let admin = appAdminUid $ appSettings app
+  return $ case muid of
+    Just (Entity _ user) ->
+      if (userIdent user) == admin
+        then Authorized
+        else Unauthorized "You must be admin to access this page"
+    Nothing -> Unauthorized "You must be admin to access this page"
 
 instance YesodAuthPersist App
 

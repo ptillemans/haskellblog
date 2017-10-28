@@ -14,8 +14,9 @@ Comment json -- Adding "json" causes ToJSON and FromJSON instances to be derived
     deriving Eq
     deriving Show
 Blog json
-    article Text
-    userId UserId Maybe
+    title Text
+    article Textarea
+    posted UTCTime
     deriving Eq Show
 
  -- By default this file is used in Model.hs (which is imported by Foundation.hs)

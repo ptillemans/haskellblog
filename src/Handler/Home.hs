@@ -9,6 +9,8 @@ import Import
 import Yesod.Form.Bootstrap3 (BootstrapFormLayout (..), renderBootstrap3)
 import Text.Julius (RawJS (..))
 
+import Handler.Blog (dateFormat)
+
 -- Define our data that will be used for creating the form.
 data FileForm = FileForm
     { fileInfo :: FileInfo
@@ -25,6 +27,9 @@ data FileForm = FileForm
 getHomeR :: Handler Html
 getHomeR = do
     (formWidget, formEnctype) <- generateFormPost sampleForm
+    blogs <- runDB $ selectList
+      [BlogArticle !=. Textarea ""]
+      [LimitTo 3, Desc BlogPosted]
     let submission = Nothing :: Maybe FileForm
         handlerName = "getHomeR" :: Text
     defaultLayout $ do
@@ -36,6 +41,9 @@ getHomeR = do
 postHomeR :: Handler Html
 postHomeR = do
     ((result, formWidget), formEnctype) <- runFormPost sampleForm
+    blogs <- runDB $ selectList
+      [BlogArticle !=. Textarea ""]
+      [LimitTo 3, Desc BlogPosted]
     let handlerName = "postHomeR" :: Text
         submission = case result of
             FormSuccess res -> Just res

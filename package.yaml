@@ -50,6 +50,8 @@ dependencies:
 # to run DevelMain in ghci we need additionally :
 - foreign-store
 
+# snamblog dependencies
+- markdown
 
 # The library contains all of our application code. The executable
 # defined below is just a thin wrapper.

@@ -1,0 +1,17 @@
+<div .masthead>
+    <div .container>
+        <div .row>
+            <h1 .header>
+                #{title}
+
+<div .container>
+    <div .bs-docs-section>
+        <div .row>
+            <div .col-lg-12>
+                <div .page-header>
+                    <p #start>posted on #{posted}
+
+
+        <div .row>
+            <div .col-lg-12>
+                 #{article}
