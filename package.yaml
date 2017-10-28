@@ -47,6 +47,10 @@ dependencies:
 - case-insensitive
 - wai
 
+# to run DevelMain in ghci we need additionally :
+- foreign-store
+
+
 # The library contains all of our application code. The executable
 # defined below is just a thin wrapper.
 library:

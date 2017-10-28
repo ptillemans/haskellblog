@@ -10,4 +10,4 @@
 
 /profile ProfileR GET
 
-/blog BlogR GET
+/blog BlogR GET POST

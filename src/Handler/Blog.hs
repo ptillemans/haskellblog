@@ -12,3 +12,13 @@ getBlogR = do
   defaultLayout $ do
     setTitle "Latest Post on the Blog"
     $(widgetFile "blog")
+
+postBlogR :: Handler Value
+postBlogR = do
+  blog <- (requireJsonBody :: Handler Blog)
+
+  maybeCurrentUserId <- maybeAuthId
+  let blog' = blog { blogUserId = maybeCurrentUserId }
+
+  insertedBlog <- runDB $ insertEntity blog'
+  returnJson insertedBlog
