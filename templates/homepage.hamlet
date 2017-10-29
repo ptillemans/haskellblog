@@ -6,7 +6,7 @@
 
 <div .container>
     <div .bs-docs-section>
-        $forall (Entity key (Blog title article posted)) <- blogs
+        $forall (Entity key (Blog title _ posted)) <- blogs
              <div .row>
                  <h1>
                     <a href="@{ArticleR key}">#{title}

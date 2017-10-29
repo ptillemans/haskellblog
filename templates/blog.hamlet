@@ -10,8 +10,8 @@
         <div .row>
             <div .col-lg-10>
                 <div .bs-callout.bs-callout-info.well>
-                    <form .form-horizontal ##{blogFormId} method="post" enctype="#{formEnctype}">
+                    <form .form-horizontal ##{blogFormId} action="@{BlogR}" method="post" enctype="#{formEnctype}">
                        ^{formWidget}
 
-                        <input .btn.btn-primary ##{articleSubmitId} type=submit>
-                           Post Article
+                        <input .btn.btn-primary ##{articleSubmitId}
+                               type=submit value="Post Article">

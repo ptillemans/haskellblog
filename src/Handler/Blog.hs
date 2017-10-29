@@ -14,9 +14,9 @@ blogIds :: (Text, Text)
 blogIds = ("article-form", "article-submit")
 
 data BlogForm = BlogForm {
-  title :: Text,
-  article :: Textarea,
-  posted :: UTCTime
+  formTitle :: Text,
+  formArticle :: Textarea,
+  formPosted :: UTCTime
 }
 
 blogForm :: Form BlogForm
@@ -37,27 +37,21 @@ blogForm = renderBootstrap3 BootstrapBasicForm $ BlogForm
 getBlogR :: Handler Html
 getBlogR = do
   (formWidget, formEnctype) <- generateFormPost blogForm
-  blogs <- runDB $ selectList
-    [BlogArticle !=. Textarea ""]
-    [LimitTo 3, Desc BlogPosted]
-  let markdownSettings = defaultMarkdownSettings
-
   defaultLayout $ do
     let (blogFormId, articleSubmitId) = blogIds
-    setTitle "Latest Post on the Blog"
+    setTitle "Create a new Post"
+    addStylesheetRemote "https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css"
+    addScriptRemote "https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"
     $(widgetFile "blog")
 
 postBlogR :: Handler Html
 postBlogR = do
   ((result, formWidget), formEnctype) <- runFormPost blogForm
-  blogs <- runDB $ selectList [BlogArticle !=. Textarea ""] [LimitTo 3]
-  let markdownSettings = defaultMarkdownSettings
-
   let (blogFormId, articleSubmitId) = blogIds
   case result of
     FormSuccess blog -> do
       _ <- runDB $ insert $
-        Blog (title blog) (article blog) (posted blog)
+        Blog (formTitle blog) (formArticle blog) (formPosted blog)
       defaultLayout $ do
         setTitle "Latest Post on the Blog"
         $(widgetFile "blog")

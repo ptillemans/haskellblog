@@ -3,33 +3,25 @@
 module Handler.HomeSpec (spec) where
 
 import TestImport
+import Yesod.Form.Fields
 
 spec :: Spec
 spec = withApp $ do
 
-    describe "Homepage" $ do
-        it "loads the index and checks it looks right" $ do
-          get HomeR
-          statusIs 200
-          htmlAnyContain "h1" "Welcome to SnamBlog"
+  describe "Homepage" $ do
+    it "loads the index and checks it looks right" $ do
+      get HomeR
+      statusIs 200
+      htmlAnyContain "h1" "Welcome to SnamBlog"
+      statusIs 200
 
-          request $ do
-              setMethod "POST"
-              setUrl HomeR
-              addToken
-              fileByLabel "Choose a file" "test/Spec.hs" "text/plain" -- talk about self-reference
-              byLabel "What's on the file?" "Some Content"
+    it "shows latest posts" $ do
+      now <- liftIO getCurrentTime
+      let article = Textarea "# Last Post\n\n\
+                    \This is the last post"
+          blog = Blog "Last Post" article now
+      _ <- runDB $ insert blog
 
-          statusIs 200
-          -- more debugging printBody
-          htmlAllContain ".upload-response" "text/plain"
-          htmlAllContain ".upload-response" "Some Content"
-
-        -- This is a simple example of using a database access in a test.  The
-        -- test will succeed for a fresh scaffolded site with an empty database,
-        -- but will fail on an existing database with a non-empty user table.
-        it "leaves the user table empty" $ do
-          get HomeR
-          statusIs 200
-          users <- runDB $ selectList ([] :: [Filter User]) []
-          assertEq "user table empty" 0 $ length users
+      get HomeR
+      statusIs 200
+      htmlAnyContain "h1" "Last Post"
