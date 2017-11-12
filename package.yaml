@@ -52,6 +52,9 @@ dependencies:
 
 # snamblog dependencies
 - markdown
+- mtl
+- conduit-combinators
+- resourcet
 
 # The library contains all of our application code. The executable
 # defined below is just a thin wrapper.
