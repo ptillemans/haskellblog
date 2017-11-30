@@ -7,29 +7,26 @@ import qualified Database.MongoDB.GridFS as GFS
 import Control.Monad.Trans (MonadIO, liftIO, lift)
 
 import Conduit
-import Data.Text (Text, unpack)
+import Data.Text (Text, pack, unpack)
 import Data.ByteString (ByteString)
 import System.IO as IO
 
 
 main :: IO ()
-main = do
+main = uploadFileFS "sandbox/bat.jpg"
+
+runMongo :: MDB.Action IO a -> IO ()
+runMongo f = do
    pipe <- MDB.connect (MDB.host "127.0.0.1")
-   _ <- MDB.access pipe MDB.master "baseball" run
+   _ <- MDB.access pipe MDB.master "baseball" f
+   liftIO $ putStr("uploaded, closing pipe")
    MDB.close pipe
 
-run :: MDB.Action IO GFS.File
-run = do
-  bucket <- lift $ GFS.openDefaultBucket
-  uploadFileFS "sandbox/bat.jpg" bucket
 
-
-data Hole = Hole
-hole :: Hole
-hole = Hole
-
-
-uploadFileFS :: (MonadIO m) => Text -> GFS.Bucket -> IO (MDB.Action m GFS.File)
-uploadFileFS src bucket = do
-  withBinaryFile (unpack src) ReadMode $ \h ->
-    return (runConduit $ sourceHandle h .| GFS.sinkFile bucket src)
+uploadFileFS :: String -> IO ()
+uploadFileFS src = do
+  withBinaryFile src ReadMode $ \h -> runMongo $ do
+    bucket <- GFS.openDefaultBucket
+    liftIO $ putStr("uploading file")
+    _ <- runConduit $ sourceHandle h .| GFS.sinkFile bucket (pack src)
+    liftIO $ putStr("done uploading")
