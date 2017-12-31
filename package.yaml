@@ -21,7 +21,7 @@ dependencies:
 - text >=0.11 && <2.0
 - persistent >=2.0 && <2.8
 - persistent-mongoDB >= 2.1.2 && < 2.8
-- mongoDB
+- mongoDB >=2.3.0 && <3.0
 - persistent-template >=2.0 && <2.8
 - template-haskell
 - shakespeare >=2.0 && <2.1
@@ -35,6 +35,7 @@ dependencies:
 - data-default
 - aeson >=0.6 && <1.3
 - conduit >=1.0 && <2.0
+- conduit-extra >=1.0 && <2.0
 - monad-logger >=0.3 && <0.4
 - fast-logger >=2.2 && <2.5
 - wai-logger >=2.2 && <2.4
@@ -47,6 +48,28 @@ dependencies:
 - case-insensitive
 - wai
 
+# dependencies to compile mongodb in place
+- tagged
+# - pureMD5
+- bson
+- network
+- random
+- random-shuffle
+- lifted-base
+- binary
+- cryptohash
+- base64-bytestring
+- base16-bytestring
+- nonce
+- parsec
+- hashtables
+- tls
+- data-default-class
+
+# dependencies to compile Pure MD5 in place
+- crypto-api
+- cereal
+
 # to run DevelMain in ghci we need additionally :
 - foreign-store
 
@@ -55,6 +78,7 @@ dependencies:
 - mtl
 - conduit-combinators
 - resourcet
+- hood
 
 # The library contains all of our application code. The executable
 # defined below is just a thin wrapper.
@@ -67,12 +91,13 @@ library:
       - -Wall
       - -fwarn-tabs
       - -O0
-      cpp-options: -DDEVELOPMENT
+      cpp-options: -DDEVELOPMENT -DFastWordExtract
     else:
       ghc-options:
       - -Wall
       - -fwarn-tabs
       - -O2
+      cpp-options: -DFastWordExtract
 
 # Runnable executable for our application
 executables:
@@ -81,6 +106,7 @@ executables:
     source-dirs: app
     ghc-options:
     - -threaded
+    - -eventlog
     - -rtsopts
     - -with-rtsopts=-N
     dependencies:
@@ -88,17 +114,32 @@ executables:
     when:
     - condition: flag(library-only)
       buildable: false
+  mongo:
+    main: mongo.hs
+    source-dirs: sandbox
+    ghc-options:
+    - -Wall
+    - -threaded
+    - -eventlog
+    - -rtsopts
+    - -with-rtsopts=-N
+    cpp-options: -DFastWordExtract
+    dependencies:
+    - snamblog
 
 # Test suite
 tests:
   test:
     main: Spec.hs
     source-dirs: test
-    ghc-options: -Wall
+    ghc-options:
+      - -Wall
+      - -threaded
+      - -eventlog
+      - -rtsopts
+      - -with-rtsopts=-N
     dependencies:
     - snamblog
-    - hspec >=2.0.0
-    - yesod-test
 
 # Define flags used by "yesod devel" to make compilation faster
 flags:
