@@ -10,6 +10,7 @@ import Conduit
 import Data.Text (Text, pack, unpack)
 import Data.ByteString (ByteString)
 import System.IO as IO
+import Debug.Trace (trace)
 
 
 main :: IO ()
@@ -26,7 +27,7 @@ runMongo f = do
 uploadFileFS :: String -> IO ()
 uploadFileFS src = do
   withBinaryFile src ReadMode $ \h -> runMongo $ do
-    bucket <- GFS.openDefaultBucket
-    liftIO $ putStr("uploading file")
-    _ <- runConduit $ sourceHandle h .| GFS.sinkFile bucket (pack src)
-    liftIO $ putStr("done uploading")
+    bucket <- trace "getting default bucket\n" $ GFS.openDefaultBucket
+    liftIO $ putStr("uploading file\n")
+    _ <- runConduit $ (trace "sourceHandle\n" $ sourceHandle h) .| (trace "sinkfile\n" $ GFS.sinkFile bucket (pack src))
+    liftIO $ putStr("done uploading\n")

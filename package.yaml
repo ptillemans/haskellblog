@@ -21,7 +21,7 @@ dependencies:
 - text >=0.11 && <2.0
 - persistent >=2.0 && <2.8
 - persistent-mongoDB >= 2.1.2 && < 2.8
-- mongoDB
+- mongoDB >=2.3.0 && <3.0
 - persistent-template >=2.0 && <2.8
 - template-haskell
 - shakespeare >=2.0 && <2.1
@@ -55,6 +55,7 @@ dependencies:
 - mtl
 - conduit-combinators
 - resourcet
+- hood
 
 # The library contains all of our application code. The executable
 # defined below is just a thin wrapper.
@@ -67,12 +68,13 @@ library:
       - -Wall
       - -fwarn-tabs
       - -O0
-      cpp-options: -DDEVELOPMENT
+      cpp-options: -DDEVELOPMENT -DFastWordExtract
     else:
       ghc-options:
       - -Wall
       - -fwarn-tabs
       - -O2
+      cpp-options: -DFastWordExtract
 
 # Runnable executable for our application
 executables:
@@ -81,6 +83,7 @@ executables:
     source-dirs: app
     ghc-options:
     - -threaded
+    - -eventlog
     - -rtsopts
     - -with-rtsopts=-N
     dependencies:
@@ -92,21 +95,26 @@ executables:
     main: mongo.hs
     source-dirs: sandbox
     ghc-options:
+    - -Wall
     - -threaded
+    - -eventlog
     - -rtsopts
     - -with-rtsopts=-N
+    cpp-options: -DFastWordExtract
     dependencies:
     - snamblog
-    when:
-    - condition: flag(library-only)
-      buildable: false
 
 # Test suite
 tests:
   test:
     main: Spec.hs
     source-dirs: test
-    ghc-options: -Wall
+    ghc-options:
+      - -Wall
+      - -threaded
+      - -eventlog
+      - -rtsopts
+      - -with-rtsopts=-N
     dependencies:
     - snamblog
     - hspec >=2.0.0

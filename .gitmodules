@@ -1,0 +1,3 @@
+[submodule "vendor/mongodb"]
+	path = vendor/mongodb
+	url = git@github.com:ptillemans/mongodb.git
