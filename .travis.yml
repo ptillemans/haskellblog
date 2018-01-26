@@ -6,8 +6,6 @@ cache:
     directories:
         - $HOME/.stack
 
-ghc:
-    - "8.2"
 # Handle git submodules yourself
 git:
     submodules: false
