@@ -1,6 +1,8 @@
--- This file has been generated from package.yaml by hpack version 0.17.1.
+-- This file has been generated from package.yaml by hpack version 0.20.0.
 --
 -- see: https://github.com/sol/hpack
+--
+-- hash: ba0c2800ab1ea82704caa46f90543c6a7aae1264e938d23cd199872120a48182
 
 name:           snamblog
 version:        0.0.0
@@ -21,50 +23,50 @@ library
   hs-source-dirs:
       src
   build-depends:
-      base >=4.8.2.0 && <4.9 || >=4.9.1.0 && <5
-    , classy-prelude-yesod >=0.10.2 && <1.0 || >=1.1
-    , yesod >=1.4.3 && <1.5
-    , yesod-core >=1.4.30 && <1.5
-    , yesod-auth >=1.4.0 && <1.5
-    , yesod-static >=1.4.0.3 && <1.6
-    , yesod-form >=1.4.0 && <1.5
+      aeson >=0.6 && <1.3
+    , base >=4.8.2.0 && <4.9 || >=4.9.1.0 && <5
+    , bytestring >=0.9 && <0.11
+    , case-insensitive
     , classy-prelude >=0.10.2
     , classy-prelude-conduit >=0.10.2
-    , bytestring >=0.9 && <0.11
-    , text >=0.11 && <2.0
-    , persistent >=2.0 && <2.8
-    , persistent-mongoDB >= 2.1.2 && < 2.8
-    , mongoDB >=2.3.0 && <3.0
-    , persistent-template >=2.0 && <2.8
-    , template-haskell
-    , shakespeare >=2.0 && <2.1
-    , hjsmin >=0.1 && <0.3
-    , monad-control >=0.3 && <1.1
-    , wai-extra >=3.0 && <3.1
-    , yaml >=0.8 && <0.9
-    , http-conduit >=2.1 && <2.3
-    , directory >=1.1 && <1.4
-    , warp >=3.0 && <3.3
-    , data-default
-    , aeson >=0.6 && <1.3
+    , classy-prelude-yesod >=0.10.2 && <1.0 || >=1.1
     , conduit >=1.0 && <2.0
-    , monad-logger >=0.3 && <0.4
-    , fast-logger >=2.2 && <2.5
-    , wai-logger >=2.2 && <2.4
-    , file-embed
-    , safe
-    , unordered-containers
-    , containers
-    , vector
-    , time
-    , case-insensitive
-    , wai
-    , foreign-store
-    , markdown
-    , mtl
     , conduit-combinators
-    , resourcet
+    , containers
+    , data-default
+    , directory >=1.1 && <1.4
+    , fast-logger >=2.2 && <2.5
+    , file-embed
+    , foreign-store
+    , hjsmin >=0.1 && <0.3
     , hood
+    , http-conduit >=2.1 && <2.3
+    , markdown
+    , monad-control >=0.3 && <1.1
+    , monad-logger >=0.3 && <0.4
+    , mongoDB >=2.3.0 && <3.0
+    , mtl
+    , persistent >=2.0 && <2.8
+    , persistent-mongoDB >=2.1.2 && <2.8
+    , persistent-template >=2.0 && <2.8
+    , resourcet
+    , safe
+    , shakespeare >=2.0 && <2.1
+    , template-haskell
+    , text >=0.11 && <2.0
+    , time
+    , unordered-containers
+    , vector
+    , wai
+    , wai-extra >=3.0 && <3.1
+    , wai-logger >=2.2 && <2.4
+    , warp >=3.0 && <3.3
+    , yaml >=0.8 && <0.9
+    , yesod >=1.4.3 && <1.5
+    , yesod-auth >=1.4.0 && <1.5
+    , yesod-core >=1.4.30 && <1.5
+    , yesod-form >=1.4.0 && <1.5
+    , yesod-static >=1.4.0.3 && <1.6
   if (flag(dev)) || (flag(library-only))
     ghc-options: -Wall -fwarn-tabs -O0
     cpp-options: -DDEVELOPMENT -DFastWordExtract
@@ -84,6 +86,8 @@ library
       Model
       Settings
       Settings.StaticFiles
+  other-modules:
+      Paths_snamblog
   default-language: Haskell2010
 
 executable mongo
@@ -93,53 +97,54 @@ executable mongo
   ghc-options: -Wall -threaded -eventlog -rtsopts -with-rtsopts=-N
   cpp-options: -DFastWordExtract
   build-depends:
-      base >=4.8.2.0 && <4.9 || >=4.9.1.0 && <5
-    , classy-prelude-yesod >=0.10.2 && <1.0 || >=1.1
-    , yesod >=1.4.3 && <1.5
-    , yesod-core >=1.4.30 && <1.5
-    , yesod-auth >=1.4.0 && <1.5
-    , yesod-static >=1.4.0.3 && <1.6
-    , yesod-form >=1.4.0 && <1.5
+      aeson >=0.6 && <1.3
+    , base >=4.8.2.0 && <4.9 || >=4.9.1.0 && <5
+    , bytestring >=0.9 && <0.11
+    , case-insensitive
     , classy-prelude >=0.10.2
     , classy-prelude-conduit >=0.10.2
-    , bytestring >=0.9 && <0.11
-    , text >=0.11 && <2.0
-    , persistent >=2.0 && <2.8
-    , persistent-mongoDB >= 2.1.2 && < 2.8
-    , mongoDB >=2.3.0 && <3.0
-    , persistent-template >=2.0 && <2.8
-    , template-haskell
-    , shakespeare >=2.0 && <2.1
-    , hjsmin >=0.1 && <0.3
-    , monad-control >=0.3 && <1.1
-    , wai-extra >=3.0 && <3.1
-    , yaml >=0.8 && <0.9
-    , http-conduit >=2.1 && <2.3
-    , directory >=1.1 && <1.4
-    , warp >=3.0 && <3.3
-    , data-default
-    , aeson >=0.6 && <1.3
+    , classy-prelude-yesod >=0.10.2 && <1.0 || >=1.1
     , conduit >=1.0 && <2.0
-    , monad-logger >=0.3 && <0.4
-    , fast-logger >=2.2 && <2.5
-    , wai-logger >=2.2 && <2.4
-    , file-embed
-    , safe
-    , unordered-containers
-    , containers
-    , vector
-    , time
-    , case-insensitive
-    , wai
-    , foreign-store
-    , markdown
-    , mtl
     , conduit-combinators
-    , resourcet
+    , containers
+    , data-default
+    , directory >=1.1 && <1.4
+    , fast-logger >=2.2 && <2.5
+    , file-embed
+    , foreign-store
+    , hjsmin >=0.1 && <0.3
     , hood
+    , http-conduit >=2.1 && <2.3
+    , markdown
+    , monad-control >=0.3 && <1.1
+    , monad-logger >=0.3 && <0.4
+    , mongoDB >=2.3.0 && <3.0
+    , mtl
+    , persistent >=2.0 && <2.8
+    , persistent-mongoDB >=2.1.2 && <2.8
+    , persistent-template >=2.0 && <2.8
+    , resourcet
+    , safe
+    , shakespeare >=2.0 && <2.1
     , snamblog
+    , template-haskell
+    , text >=0.11 && <2.0
+    , time
+    , unordered-containers
+    , vector
+    , wai
+    , wai-extra >=3.0 && <3.1
+    , wai-logger >=2.2 && <2.4
+    , warp >=3.0 && <3.3
+    , yaml >=0.8 && <0.9
+    , yesod >=1.4.3 && <1.5
+    , yesod-auth >=1.4.0 && <1.5
+    , yesod-core >=1.4.30 && <1.5
+    , yesod-form >=1.4.0 && <1.5
+    , yesod-static >=1.4.0.3 && <1.6
   other-modules:
       Main
+      Paths_snamblog
   default-language: Haskell2010
 
 executable snamblog
@@ -148,55 +153,56 @@ executable snamblog
       app
   ghc-options: -threaded -eventlog -rtsopts -with-rtsopts=-N
   build-depends:
-      base >=4.8.2.0 && <4.9 || >=4.9.1.0 && <5
-    , classy-prelude-yesod >=0.10.2 && <1.0 || >=1.1
-    , yesod >=1.4.3 && <1.5
-    , yesod-core >=1.4.30 && <1.5
-    , yesod-auth >=1.4.0 && <1.5
-    , yesod-static >=1.4.0.3 && <1.6
-    , yesod-form >=1.4.0 && <1.5
+      aeson >=0.6 && <1.3
+    , base >=4.8.2.0 && <4.9 || >=4.9.1.0 && <5
+    , bytestring >=0.9 && <0.11
+    , case-insensitive
     , classy-prelude >=0.10.2
     , classy-prelude-conduit >=0.10.2
-    , bytestring >=0.9 && <0.11
-    , text >=0.11 && <2.0
-    , persistent >=2.0 && <2.8
-    , persistent-mongoDB >= 2.1.2 && < 2.8
-    , mongoDB >=2.3.0 && <3.0
-    , persistent-template >=2.0 && <2.8
-    , template-haskell
-    , shakespeare >=2.0 && <2.1
-    , hjsmin >=0.1 && <0.3
-    , monad-control >=0.3 && <1.1
-    , wai-extra >=3.0 && <3.1
-    , yaml >=0.8 && <0.9
-    , http-conduit >=2.1 && <2.3
-    , directory >=1.1 && <1.4
-    , warp >=3.0 && <3.3
-    , data-default
-    , aeson >=0.6 && <1.3
+    , classy-prelude-yesod >=0.10.2 && <1.0 || >=1.1
     , conduit >=1.0 && <2.0
-    , monad-logger >=0.3 && <0.4
-    , fast-logger >=2.2 && <2.5
-    , wai-logger >=2.2 && <2.4
-    , file-embed
-    , safe
-    , unordered-containers
-    , containers
-    , vector
-    , time
-    , case-insensitive
-    , wai
-    , foreign-store
-    , markdown
-    , mtl
     , conduit-combinators
-    , resourcet
+    , containers
+    , data-default
+    , directory >=1.1 && <1.4
+    , fast-logger >=2.2 && <2.5
+    , file-embed
+    , foreign-store
+    , hjsmin >=0.1 && <0.3
     , hood
+    , http-conduit >=2.1 && <2.3
+    , markdown
+    , monad-control >=0.3 && <1.1
+    , monad-logger >=0.3 && <0.4
+    , mongoDB >=2.3.0 && <3.0
+    , mtl
+    , persistent >=2.0 && <2.8
+    , persistent-mongoDB >=2.1.2 && <2.8
+    , persistent-template >=2.0 && <2.8
+    , resourcet
+    , safe
+    , shakespeare >=2.0 && <2.1
     , snamblog
+    , template-haskell
+    , text >=0.11 && <2.0
+    , time
+    , unordered-containers
+    , vector
+    , wai
+    , wai-extra >=3.0 && <3.1
+    , wai-logger >=2.2 && <2.4
+    , warp >=3.0 && <3.3
+    , yaml >=0.8 && <0.9
+    , yesod >=1.4.3 && <1.5
+    , yesod-auth >=1.4.0 && <1.5
+    , yesod-core >=1.4.30 && <1.5
+    , yesod-form >=1.4.0 && <1.5
+    , yesod-static >=1.4.0.3 && <1.6
   if flag(library-only)
     buildable: False
   other-modules:
       DevelMain
+      Paths_snamblog
   default-language: Haskell2010
 
 test-suite test
@@ -206,52 +212,52 @@ test-suite test
       test
   ghc-options: -Wall -threaded -eventlog -rtsopts -with-rtsopts=-N
   build-depends:
-      base >=4.8.2.0 && <4.9 || >=4.9.1.0 && <5
-    , classy-prelude-yesod >=0.10.2 && <1.0 || >=1.1
-    , yesod >=1.4.3 && <1.5
-    , yesod-core >=1.4.30 && <1.5
-    , yesod-auth >=1.4.0 && <1.5
-    , yesod-static >=1.4.0.3 && <1.6
-    , yesod-form >=1.4.0 && <1.5
+      aeson >=0.6 && <1.3
+    , base >=4.8.2.0 && <4.9 || >=4.9.1.0 && <5
+    , bytestring >=0.9 && <0.11
+    , case-insensitive
     , classy-prelude >=0.10.2
     , classy-prelude-conduit >=0.10.2
-    , bytestring >=0.9 && <0.11
-    , text >=0.11 && <2.0
-    , persistent >=2.0 && <2.8
-    , persistent-mongoDB >= 2.1.2 && < 2.8
-    , mongoDB >=2.3.0 && <3.0
-    , persistent-template >=2.0 && <2.8
-    , template-haskell
-    , shakespeare >=2.0 && <2.1
-    , hjsmin >=0.1 && <0.3
-    , monad-control >=0.3 && <1.1
-    , wai-extra >=3.0 && <3.1
-    , yaml >=0.8 && <0.9
-    , http-conduit >=2.1 && <2.3
-    , directory >=1.1 && <1.4
-    , warp >=3.0 && <3.3
-    , data-default
-    , aeson >=0.6 && <1.3
+    , classy-prelude-yesod >=0.10.2 && <1.0 || >=1.1
     , conduit >=1.0 && <2.0
-    , monad-logger >=0.3 && <0.4
-    , fast-logger >=2.2 && <2.5
-    , wai-logger >=2.2 && <2.4
-    , file-embed
-    , safe
-    , unordered-containers
-    , containers
-    , vector
-    , time
-    , case-insensitive
-    , wai
-    , foreign-store
-    , markdown
-    , mtl
     , conduit-combinators
-    , resourcet
+    , containers
+    , data-default
+    , directory >=1.1 && <1.4
+    , fast-logger >=2.2 && <2.5
+    , file-embed
+    , foreign-store
+    , hjsmin >=0.1 && <0.3
     , hood
-    , snamblog
     , hspec >=2.0.0
+    , http-conduit >=2.1 && <2.3
+    , markdown
+    , monad-control >=0.3 && <1.1
+    , monad-logger >=0.3 && <0.4
+    , mongoDB >=2.3.0 && <3.0
+    , mtl
+    , persistent >=2.0 && <2.8
+    , persistent-mongoDB >=2.1.2 && <2.8
+    , persistent-template >=2.0 && <2.8
+    , resourcet
+    , safe
+    , shakespeare >=2.0 && <2.1
+    , snamblog
+    , template-haskell
+    , text >=0.11 && <2.0
+    , time
+    , unordered-containers
+    , vector
+    , wai
+    , wai-extra >=3.0 && <3.1
+    , wai-logger >=2.2 && <2.4
+    , warp >=3.0 && <3.3
+    , yaml >=0.8 && <0.9
+    , yesod >=1.4.3 && <1.5
+    , yesod-auth >=1.4.0 && <1.5
+    , yesod-core >=1.4.30 && <1.5
+    , yesod-form >=1.4.0 && <1.5
+    , yesod-static >=1.4.0.3 && <1.6
     , yesod-test
   other-modules:
       Handler.BlogSpec
@@ -260,4 +266,5 @@ test-suite test
       Handler.HomeSpec
       Handler.ProfileSpec
       TestImport
+      Paths_snamblog
   default-language: Haskell2010

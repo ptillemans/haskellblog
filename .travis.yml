@@ -1,5 +1,7 @@
 dist: trusty
 language: haskell
+services: 
+    - mongodb
 ghc:
     - 8.0
 # Handle git submodules yourself
@@ -11,3 +13,7 @@ before_install:
     - git submodule update --init --recursive
     - cabal install happy
     - cabal install alex
+before_script:
+    - sleep 10
+    - mongo snamblog_test --eval 'db.createUser({user:"snamblog",pwd:"snamblog",roles:["readWrite"]});'
+
