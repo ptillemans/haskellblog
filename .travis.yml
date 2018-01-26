@@ -1,3 +1,5 @@
+dist: trusty
+language: haskell
 ghc:
     - "8.2"
     - "8.0"
