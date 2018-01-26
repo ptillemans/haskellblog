@@ -18,4 +18,3 @@ cabal.sandbox.config
 *.keter
 *~
 \#*
-snamblog.cabal
