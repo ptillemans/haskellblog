@@ -2,7 +2,7 @@
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: ba0c2800ab1ea82704caa46f90543c6a7aae1264e938d23cd199872120a48182
+-- hash: 1d7695e318c33c6f6a42fdb659f58db3a1069bfdc4e1c5766cf4ca070964fe53
 
 name:           snamblog
 version:        0.0.0
@@ -44,7 +44,7 @@ library
     , markdown
     , monad-control >=0.3 && <1.1
     , monad-logger >=0.3 && <0.4
-    , mongoDB >=2.3.0 && <3.0
+    , mongoDB >=2.3.0.2 && <3.0
     , mtl
     , persistent >=2.0 && <2.8
     , persistent-mongoDB >=2.1.2 && <2.8
@@ -80,6 +80,7 @@ library
       Handler.Comment
       Handler.Common
       Handler.Home
+      Handler.Image
       Handler.Profile
       Import
       Import.NoFoundation
@@ -118,7 +119,7 @@ executable mongo
     , markdown
     , monad-control >=0.3 && <1.1
     , monad-logger >=0.3 && <0.4
-    , mongoDB >=2.3.0 && <3.0
+    , mongoDB >=2.3.0.2 && <3.0
     , mtl
     , persistent >=2.0 && <2.8
     , persistent-mongoDB >=2.1.2 && <2.8
@@ -174,7 +175,7 @@ executable snamblog
     , markdown
     , monad-control >=0.3 && <1.1
     , monad-logger >=0.3 && <0.4
-    , mongoDB >=2.3.0 && <3.0
+    , mongoDB >=2.3.0.2 && <3.0
     , mtl
     , persistent >=2.0 && <2.8
     , persistent-mongoDB >=2.1.2 && <2.8
@@ -234,7 +235,7 @@ test-suite test
     , markdown
     , monad-control >=0.3 && <1.1
     , monad-logger >=0.3 && <0.4
-    , mongoDB >=2.3.0 && <3.0
+    , mongoDB >=2.3.0.2 && <3.0
     , mtl
     , persistent >=2.0 && <2.8
     , persistent-mongoDB >=2.1.2 && <2.8
@@ -264,6 +265,7 @@ test-suite test
       Handler.CommentSpec
       Handler.CommonSpec
       Handler.HomeSpec
+      Handler.ImageSpec
       Handler.ProfileSpec
       TestImport
       Paths_snamblog

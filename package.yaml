@@ -21,7 +21,7 @@ dependencies:
 - text >=0.11 && <2.0
 - persistent >=2.0 && <2.8
 - persistent-mongoDB >= 2.1.2 && < 2.8
-- mongoDB >=2.3.0 && <3.0
+- mongoDB >=2.3.0.2 && <3.0
 - persistent-template >=2.0 && <2.8
 - template-haskell
 - shakespeare >=2.0 && <2.1
