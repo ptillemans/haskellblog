@@ -27,8 +27,8 @@ spec = withApp $ do
         setMethod "POST"
         setUrl BlogR
         addToken
-        byLabel "Title" $ "Some Title"
-        byLabel "Article" $ unTextarea article
+        byLabelExact "Title" $ "Some Title"
+        byLabelExact "Article" $ unTextarea article
 
       statusIs 200
 
