@@ -151,6 +151,9 @@ instance Yesod App where
     isAuthorized BlogR _ = isAdmin
     isAuthorized (ArticleR _) True = isAdmin
 
+    isAuthorized (ImageR _) _ = return Authorized
+    isAuthorized ImageUploadR  _ = isAdmin
+
     -- This function creates static content files in the static folder
     -- and names them based on a hash of their content. This allows
     -- expiration dates to be set far in the future without worry of

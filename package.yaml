@@ -119,6 +119,7 @@ tests:
     - snamblog
     - hspec >=2.0.0
     - yesod-test
+    - bson
 
 # Define flags used by "yesod devel" to make compilation faster
 flags:
