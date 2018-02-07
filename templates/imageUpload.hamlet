@@ -1,0 +1,17 @@
+<div .masthead>
+    <div .container>
+        <div .row>
+            <h1 .header>
+                Upload an Image
+<div .container>
+    <!-- Starting
+        ================================================== -->
+    <div .bs-docs-section>
+        <div .row>
+            <div .col-lg-10>
+                <div .bs-callout.bs-callout-info.well>
+                    <form .form-horizontal ##{uploadFormId} action="@{ImageUploadR}" method="post" enctype="#{formEnctype}">
+                       ^{formWidget}
+
+                        <input .btn.btn-primary ##{uploadSubmitId}
+                               type=submit value="Upload Image">
