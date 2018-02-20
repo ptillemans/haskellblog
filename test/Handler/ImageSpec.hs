@@ -36,3 +36,29 @@ spec = withApp $ do
       bucket <- runDB $ GFS.openDefaultBucket
       mFile <- runDB $ GFS.findOneFile bucket [ "filename" =: fname ]
       assertEq "image should be uploaded" (isJust mFile) True
+
+
+    it "allows the web client to upload an image" $ do
+      app <- getTestYesod
+      let admin = appAdminUid $ appSettings app
+      let fname = "test/data/bat.jpg" :: String
+      adminEntity <- createUser admin
+      authenticateAs adminEntity
+
+      get ImageUploadR
+      statusIs 200
+
+      request $ do
+        setMethod "POST"
+        setUrl ImageUploadR
+        addToken
+        addRequestHeader ("accept", "application/json")
+        addFile "image" fname "image/jpeg"
+
+      statusIs 200
+      printBody
+      bodyEquals "{\"filename\":\"test/data/bat.jpg\"}"
+
+      bucket <- runDB $ GFS.openDefaultBucket
+      mFile <- runDB $ GFS.findOneFile bucket [ "filename" =: fname ]
+      assertEq "image should be uploaded" (isJust mFile) True

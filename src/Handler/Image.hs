@@ -9,6 +9,8 @@ module Handler.Image where
 import Import
 import Yesod.Form.Bootstrap3 (BootstrapFormLayout (..), renderBootstrap3)
 import qualified Database.MongoDB.GridFS as GFS
+import Data.Aeson
+
 -- import Debug.Trace (trace)
 
 
@@ -42,21 +44,40 @@ getImageUploadR = trace "getImageUploadR" $ do
     setTitle "Upload an Image"
     $(widgetFile "imageUpload")
 
-postImageUploadR :: Handler Html
-postImageUploadR = trace "postImageUploadR" $ do
+postImageUploadHtml :: Handler Html
+postImageUploadHtml = trace "postImageUploadHtml" $ do
   ((result, formWidget), formEnctype) <- runFormPost imageUploadForm
   let (uploadFormId, uploadSubmitId) = imageUploadIds
   case result of
-    FormSuccess upload -> trace "form success" $ do
-      _ <- runDB $ trace "uploading image" $ do
+    FormSuccess upload -> uploadFile upload
+    _                  -> setMessage "<p>Invalid Input</p>"
+  defaultLayout $ do
+    setTitle "Upload an Image"
+    $(widgetFile "imageUpload")
+  where
+    uploadFile upload = runDB $ trace "uploading image" $ do
         bucket <- GFS.openDefaultBucket
         let file = formFile upload
         runConduit $ fileSource file .| GFS.sinkFile bucket (fileName file)
-      defaultLayout $ do
-        setTitle "Upload an Image"
-        $(widgetFile "imageUpload")
-    _ -> trace "form failed" $ do
-      _ <- setMessage "<p>Invalid Input</p>"
-      defaultLayout $ do
-        setTitle "Upload an Image"
-        $(widgetFile "imageUpload")
+        liftIO $ putStrLn "file uploaded"
+
+postImageUploadJson :: Handler Value
+postImageUploadJson = trace "postImageUploadJson" $ do
+  ((result, formWidget), formEnctype) <- runFormPost imageUploadForm
+  case result of
+    FormSuccess upload -> do
+      uploadFile upload
+      return $ object [ "filename" .= (fileName . formFile $ upload) ]
+    _                  -> return $ object [ ]
+  where
+    uploadFile upload = runDB $ trace "uploading image" $ do
+        bucket <- GFS.openDefaultBucket
+        let file = formFile upload
+        runConduit $ fileSource file .| GFS.sinkFile bucket (fileName file)
+        liftIO $ putStrLn "file uploaded"
+
+
+postImageUploadR :: Handler TypedContent
+postImageUploadR =  selectRep $ do
+  provideRep $ postImageUploadHtml
+  provideRep $ postImageUploadJson
