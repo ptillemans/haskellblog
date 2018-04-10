@@ -42,6 +42,8 @@ getBlogR = do
     setTitle "Create a new Post"
     addStylesheetRemote "https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css"
     addScriptRemote "https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"
+    addScript $ StaticR js_inlineattachment_js
+    addScript $ StaticR js_codemirror4inlineattachment_js
     $(widgetFile "blog")
 
 postBlogR :: Handler Html

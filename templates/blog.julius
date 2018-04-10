@@ -1,1 +1,9 @@
 var simplemde = new SimpleMDE({forceSync: true});
+
+
+var inlineAttachmentConfig = {
+  uploadUrl: '@{ImageUploadR}',
+}
+
+inlineAttachment.editors.codemirror4.attach(simplemde.codemirror,
+  inlineAttachmentConfig);
