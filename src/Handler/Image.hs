@@ -10,6 +10,7 @@ import Import
 import Yesod.Form.Bootstrap3 (BootstrapFormLayout (..), renderBootstrap3)
 import qualified Database.MongoDB.GridFS as GFS
 import Data.Aeson
+import Data.Text as T
 
 -- import Debug.Trace (trace)
 
@@ -63,12 +64,13 @@ postImageUploadHtml = trace "postImageUploadHtml" $ do
 
 postImageUploadJson :: Handler Value
 postImageUploadJson = trace "postImageUploadJson" $ do
-  ((result, formWidget), formEnctype) <- runFormPost imageUploadForm
+  ((result, formWidget), formEnctype) <- runFormPostNoToken imageUploadForm
   case result of
     FormSuccess upload -> do
       uploadFile upload
-      return $ object [ "filename" .= (fileName . formFile $ upload) ]
-    _                  -> return $ object [ ]
+      return $ object [ "filename" .= ("/image/" <> (fileName . formFile $ upload)) ]
+    FormMissing ->  trace "form missing" $ return $ object [ "filename" .= (T.pack "missing-file") ]
+    FormFailure ss -> trace (T.unpack . T.concat $ ss) $ return $ array ss
   where
     uploadFile upload = runDB $ trace "uploading image" $ do
         bucket <- GFS.openDefaultBucket

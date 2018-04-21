@@ -8,7 +8,11 @@ module Handler.Blog where
 
 import Import
 import Yesod.Form.Bootstrap3 (BootstrapFormLayout (..), renderBootstrap3)
+import Yesod.Core.Handler (defaultCsrfHeaderName, defaultCsrfCookieName)
 import Text.Markdown (markdown, defaultMarkdownSettings)
+import Data.CaseInsensitive as CI
+import Data.Text.Encoding as TE
+import Text.Julius (rawJS, RawJavascript)
 
 blogIds :: (Text, Text)
 blogIds = ("article-form", "article-submit")
@@ -33,12 +37,21 @@ blogForm = renderBootstrap3 BootstrapBasicForm $ BlogForm
       [("rows", "20"),
       ("cols", "80")]
 
+csrfHeaderName :: RawJavascript
+csrfHeaderName =
+  rawJS $ TE.decodeUtf8 $ CI.foldedCase defaultCsrfHeaderName
+
+csrfCookieName :: RawJavascript
+csrfCookieName =
+  rawJS $ TE.decodeUtf8 $ defaultCsrfCookieName
 
 getBlogR :: Handler Html
 getBlogR = do
   (formWidget, formEnctype) <- generateFormPost blogForm
   defaultLayout $ do
     let (blogFormId, articleSubmitId) = blogIds
+    let hname = csrfHeaderName
+    let cname = csrfCookieName
     setTitle "Create a new Post"
     addStylesheetRemote "https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css"
     addScriptRemote "https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"
@@ -49,6 +62,8 @@ getBlogR = do
 postBlogR :: Handler Html
 postBlogR = do
   ((result, formWidget), formEnctype) <- runFormPost blogForm
+  let hname = csrfHeaderName
+  let cname = csrfCookieName
   let (blogFormId, articleSubmitId) = blogIds
   case result of
     FormSuccess blog -> do

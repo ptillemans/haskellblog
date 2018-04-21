@@ -18,7 +18,7 @@ spec = withApp $ do
     it "allows the admin user to upload an image" $ do
       app <- getTestYesod
       let admin = appAdminUid $ appSettings app
-      let fname = "test/data/bat.jpg" :: String
+      let fname = "bat.jpg" :: String
       adminEntity <- createUser admin
       authenticateAs adminEntity
 
@@ -41,7 +41,7 @@ spec = withApp $ do
     it "allows the web client to upload an image" $ do
       app <- getTestYesod
       let admin = appAdminUid $ appSettings app
-      let fname = "test/data/bat.jpg" :: String
+      let fname = "bat.jpg" :: String
       adminEntity <- createUser admin
       authenticateAs adminEntity
 
@@ -57,7 +57,7 @@ spec = withApp $ do
 
       statusIs 200
       printBody
-      bodyEquals "{\"filename\":\"test/data/bat.jpg\"}"
+      bodyContains $ "/image/" <> fname
 
       bucket <- runDB $ GFS.openDefaultBucket
       mFile <- runDB $ GFS.findOneFile bucket [ "filename" =: fname ]

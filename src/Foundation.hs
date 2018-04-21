@@ -182,6 +182,10 @@ instance Yesod App where
 
     makeLogger = return . appLogger
 
+    -- increase file upload limit to 64M for hi res images
+    maximumContentLength _ (Just (ImageR _)) = Just $ 64 * 1024 * 1024
+    maximumContentLength _ _ = Just $ 2 * 1024 * 1024
+
 -- Define breadcrumbs.
 instance YesodBreadcrumbs App where
   breadcrumb HomeR = return ("Home", Nothing)

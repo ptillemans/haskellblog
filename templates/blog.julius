@@ -1,9 +1,17 @@
 var simplemde = new SimpleMDE({forceSync: true});
 
+var csrf = Cookies.get("#{cname}");
 
 var inlineAttachmentConfig = {
   uploadUrl: '@{ImageUploadR}',
-}
+  uploadFieldName: 'image',
+  extraHeaders: {
+    'accept': 'application/json',
+    '#{hname}': csrf
+  }
+};
 
 inlineAttachment.editors.codemirror4.attach(simplemde.codemirror,
   inlineAttachmentConfig);
+
+console.log("inline attachment configured.");
