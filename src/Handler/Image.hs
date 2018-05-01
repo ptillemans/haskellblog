@@ -11,11 +11,7 @@ import Yesod.Form.Bootstrap3 (BootstrapFormLayout (..), renderBootstrap3)
 import qualified Database.MongoDB.GridFS as GFS
 import Data.Aeson
 import Data.Text as T
-
--- import Debug.Trace (trace)
-data Hole = Hole
-hole = undefined
-
+import Database.MongoDB (select, (=:))
 
 data ImageUploadForm = ImageUploadForm {
   formFile :: FileInfo
@@ -34,10 +30,16 @@ imageUploadForm = renderBootstrap3 BootstrapBasicForm $ ImageUploadForm
 
 getImageR :: Text -> Handler TypedContent
 getImageR imageId = do
-  runDB $ do
+  mfile <- runDB $ do
     bucket <- GFS.openDefaultBucket
-    let file = GFS.File bucket imageId
-    return GFS.sourceFile file
+    GFS.findOneFile bucket ["filename" =: imageId]
+  source <- case mfile of
+    Just file -> return $ transPipe runDB (GFS.sourceFile file)
+    Nothing -> return $ return ()
+  respondSource "image/jpeg" $ source .| awaitForever sendChunkBS
+
+
+
 
 deleteImageR :: Text  -> Handler Html
 deleteImageR imageId = error "Not yet implemented: deleteImageR"
