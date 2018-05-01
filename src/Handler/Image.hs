@@ -13,7 +13,8 @@ import Data.Aeson
 import Data.Text as T
 
 -- import Debug.Trace (trace)
-
+data Hole = Hole
+hole = undefined
 
 
 data ImageUploadForm = ImageUploadForm {
@@ -31,10 +32,14 @@ imageUploadForm = renderBootstrap3 BootstrapBasicForm $ ImageUploadForm
                                    , fsName = Just "image"
                                    , fsAttrs = [] } Nothing
 
-getImageR :: ImageId -> Handler Html
-getImageR imageId = error "Not yet implemented: getImageR"
+getImageR :: Text -> Handler TypedContent
+getImageR imageId = do
+  runDB $ do
+    bucket <- GFS.openDefaultBucket
+    let file = GFS.File bucket imageId
+    return GFS.sourceFile file
 
-deleteImageR :: ImageId -> Handler Html
+deleteImageR :: Text  -> Handler Html
 deleteImageR imageId = error "Not yet implemented: deleteImageR"
 
 getImageUploadR :: Handler Html

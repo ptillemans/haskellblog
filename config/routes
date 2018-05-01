@@ -12,5 +12,5 @@
 
 /blog BlogR GET POST
 /blog/#BlogId ArticleR GET PUT DELETE
-/image/#ImageId ImageR GET DELETE
+/image/#Text ImageR GET DELETE
 /image ImageUploadR GET POST
