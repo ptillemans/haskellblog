@@ -39,8 +39,6 @@ getImageR imageId = do
   respondSource "image/jpeg" $ source .| awaitForever sendChunkBS
 
 
-
-
 deleteImageR :: Text  -> Handler Html
 deleteImageR imageId = error "Not yet implemented: deleteImageR"
 
@@ -52,22 +50,26 @@ getImageUploadR = trace "getImageUploadR" $ do
     setTitle "Upload an Image"
     $(widgetFile "imageUpload")
 
+data Hole = Hole
+hole = undefined
+
+uploadFile :: FileInfo -> HandlerT App IO ()
+uploadFile file = runDB $ do
+  bucket <- GFS.openDefaultBucket
+  runConduit $ fileSource file .| GFS.sinkFile bucket (fileName file)
+  liftIO $ putStrLn "file uploaded"
+
 postImageUploadHtml :: Handler Html
 postImageUploadHtml = trace "postImageUploadHtml" $ do
   ((result, formWidget), formEnctype) <- runFormPost imageUploadForm
   let (uploadFormId, uploadSubmitId) = imageUploadIds
   case result of
-    FormSuccess upload -> uploadFile upload
+    FormSuccess upload -> uploadFile (formFile upload)
     _                  -> setMessage "<p>Invalid Input</p>"
   defaultLayout $ do
     setTitle "Upload an Image"
     $(widgetFile "imageUpload")
-  where
-    uploadFile upload = runDB $ trace "uploading image" $ do
-        bucket <- GFS.openDefaultBucket
-        let file = formFile upload
-        runConduit $ fileSource file .| GFS.sinkFile bucket (fileName file)
-        liftIO $ putStrLn "file uploaded"
+
 
 postImageUploadJson :: Handler Value
 postImageUploadJson = trace "postImageUploadJson" $ do
@@ -76,8 +78,10 @@ postImageUploadJson = trace "postImageUploadJson" $ do
     FormSuccess upload -> do
       uploadFile upload
       return $ object [ "filename" .= ("/image/" <> (fileName . formFile $ upload)) ]
-    FormMissing ->  trace "form missing" $ return $ object [ "filename" .= (T.pack "missing-file") ]
-    FormFailure ss -> trace (T.unpack . T.concat $ ss) $ return $ array ss
+    FormMissing ->
+      return $ object [ "filename" .= (T.pack "missing-file") ]
+    FormFailure ss ->
+      return $ array ss
   where
     uploadFile upload = runDB $ trace "uploading image" $ do
         bucket <- GFS.openDefaultBucket
