@@ -169,5 +169,5 @@ handler :: Handler a -> IO a
 handler h = getAppSettings >>= makeFoundation >>= flip unsafeHandler h
 
 -- | Run DB queries
-db :: ReaderT MongoContext (HandlerT App IO) a -> IO a
+db :: ReaderT MongoContext Handler a -> IO a
 db = handler . runDB

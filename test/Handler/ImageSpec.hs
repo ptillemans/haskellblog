@@ -3,7 +3,6 @@
 module Handler.ImageSpec (spec) where
 
 import TestImport
-import Yesod.Form.Fields
 import Settings
 import Data.Bson
 import qualified Database.MongoDB.GridFS as GFS

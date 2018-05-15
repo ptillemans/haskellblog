@@ -9,9 +9,8 @@ module Handler.Image where
 import Import
 import Yesod.Form.Bootstrap3 (BootstrapFormLayout (..), renderBootstrap3)
 import qualified Database.MongoDB.GridFS as GFS
-import Data.Aeson
 import Data.Text as T
-import Database.MongoDB (select, (=:))
+import Database.MongoDB ((=:))
 
 data ImageUploadForm = ImageUploadForm {
   formFile :: FileInfo
@@ -39,28 +38,22 @@ getImageR imageId = do
   respondSource "image/jpeg" $ source .| awaitForever sendChunkBS
 
 
-deleteImageR :: Text  -> Handler Html
-deleteImageR imageId = error "Not yet implemented: deleteImageR"
-
 getImageUploadR :: Handler Html
-getImageUploadR = trace "getImageUploadR" $ do
+getImageUploadR = do
   (formWidget, formEnctype) <- generateFormPost imageUploadForm
   defaultLayout $ do
     let (uploadFormId, uploadSubmitId) = imageUploadIds
     setTitle "Upload an Image"
     $(widgetFile "imageUpload")
 
-data Hole = Hole
-hole = undefined
-
-uploadFile :: FileInfo -> HandlerT App IO ()
+uploadFile :: FileInfo -> Handler ()
 uploadFile file = runDB $ do
   bucket <- GFS.openDefaultBucket
-  runConduit $ fileSource file .| GFS.sinkFile bucket (fileName file)
+  _ <- runConduit $ fileSource file .| GFS.sinkFile bucket (fileName file)
   liftIO $ putStrLn "file uploaded"
 
 postImageUploadHtml :: Handler Html
-postImageUploadHtml = trace "postImageUploadHtml" $ do
+postImageUploadHtml = do
   ((result, formWidget), formEnctype) <- runFormPost imageUploadForm
   let (uploadFormId, uploadSubmitId) = imageUploadIds
   case result of
@@ -72,22 +65,16 @@ postImageUploadHtml = trace "postImageUploadHtml" $ do
 
 
 postImageUploadJson :: Handler Value
-postImageUploadJson = trace "postImageUploadJson" $ do
-  ((result, formWidget), formEnctype) <- runFormPostNoToken imageUploadForm
+postImageUploadJson = do
+  ((result, _), _) <- runFormPostNoToken imageUploadForm
   case result of
     FormSuccess upload -> do
-      uploadFile upload
+      uploadFile (formFile upload)
       return $ object [ "filename" .= ("/image/" <> (fileName . formFile $ upload)) ]
     FormMissing ->
       return $ object [ "filename" .= (T.pack "missing-file") ]
     FormFailure ss ->
       return $ array ss
-  where
-    uploadFile upload = runDB $ trace "uploading image" $ do
-        bucket <- GFS.openDefaultBucket
-        let file = formFile upload
-        runConduit $ fileSource file .| GFS.sinkFile bucket (fileName file)
-        liftIO $ putStrLn "file uploaded"
 
 
 postImageUploadR :: Handler TypedContent

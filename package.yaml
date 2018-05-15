@@ -91,18 +91,6 @@ executables:
     when:
     - condition: flag(library-only)
       buildable: false
-  mongo:
-    main: mongo.hs
-    source-dirs: sandbox
-    ghc-options:
-    - -Wall
-    - -threaded
-    - -eventlog
-    - -rtsopts
-    - -with-rtsopts=-N
-    cpp-options: -DFastWordExtract
-    dependencies:
-    - snamblog
 
 # Test suite
 tests:

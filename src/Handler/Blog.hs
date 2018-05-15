@@ -92,9 +92,3 @@ getArticleR blogId = do
   defaultLayout $ do
     setTitle $ toHtml title
     $(widgetFile "article")
-
-putArticleR :: BlogId -> Handler Html
-putArticleR blogId = undefined
-
-deleteArticleR :: BlogId -> Handler Html
-deleteArticleR blogId = undefined

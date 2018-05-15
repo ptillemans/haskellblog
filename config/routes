@@ -11,6 +11,6 @@
 /profile ProfileR GET
 
 /blog BlogR GET POST
-/blog/#BlogId ArticleR GET PUT DELETE
-/image/#Text ImageR GET DELETE
+/blog/#BlogId ArticleR GET
+/image/#Text ImageR GET
 /image ImageUploadR GET POST
