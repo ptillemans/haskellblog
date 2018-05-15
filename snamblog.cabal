@@ -1,8 +1,8 @@
--- This file has been generated from package.yaml by hpack version 0.20.0.
+-- This file has been generated from package.yaml by hpack version 0.28.2.
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 66cc3c7e5ae3d79ac5b8ad5906a372ec1f94a4c2f7c2bdbd64130c0b5f74b66c
+-- hash: 686f7174dc1f94c201f1d2a7c76bc3c49aa581ffadb84ef886d75b75c0eaa75e
 
 name:           snamblog
 version:        0.0.0
@@ -40,14 +40,14 @@ library
     , foreign-store
     , hjsmin >=0.1 && <0.3
     , hood
-    , http-conduit >=2.1 && <2.3
+    , http-conduit >=2.3 && <2.4
     , markdown
     , monad-control >=0.3 && <1.1
     , monad-logger >=0.3 && <0.4
     , mongoDB >=2.3.0.2 && <3.0
     , mtl
-    , persistent >=2.0 && <2.8
-    , persistent-mongoDB >=2.1.2 && <2.8
+    , persistent >=2.8 && <2.9
+    , persistent-mongoDB >=2.1.2 && <2.9
     , persistent-template >=2.0 && <2.8
     , resourcet
     , safe
@@ -62,11 +62,11 @@ library
     , wai-logger >=2.2 && <2.4
     , warp >=3.0 && <3.3
     , yaml >=0.8 && <0.9
-    , yesod >=1.4.3 && <1.5
-    , yesod-auth >=1.4.0 && <1.5
-    , yesod-core >=1.4.30 && <1.5
-    , yesod-form >=1.4.0 && <1.5
-    , yesod-static >=1.4.0.3 && <1.6
+    , yesod >=1.6.0 && <1.7
+    , yesod-auth >=1.6.3 && <1.7
+    , yesod-core >=1.6.4 && <1.7
+    , yesod-form >=1.6.1 && <1.7
+    , yesod-static >=1.6.0 && <1.7
   if (flag(dev)) || (flag(library-only))
     ghc-options: -Wall -fwarn-tabs -O0
     cpp-options: -DDEVELOPMENT -DFastWordExtract
@@ -115,14 +115,14 @@ executable mongo
     , foreign-store
     , hjsmin >=0.1 && <0.3
     , hood
-    , http-conduit >=2.1 && <2.3
+    , http-conduit >=2.3 && <2.4
     , markdown
     , monad-control >=0.3 && <1.1
     , monad-logger >=0.3 && <0.4
     , mongoDB >=2.3.0.2 && <3.0
     , mtl
-    , persistent >=2.0 && <2.8
-    , persistent-mongoDB >=2.1.2 && <2.8
+    , persistent >=2.8 && <2.9
+    , persistent-mongoDB >=2.1.2 && <2.9
     , persistent-template >=2.0 && <2.8
     , resourcet
     , safe
@@ -138,11 +138,11 @@ executable mongo
     , wai-logger >=2.2 && <2.4
     , warp >=3.0 && <3.3
     , yaml >=0.8 && <0.9
-    , yesod >=1.4.3 && <1.5
-    , yesod-auth >=1.4.0 && <1.5
-    , yesod-core >=1.4.30 && <1.5
-    , yesod-form >=1.4.0 && <1.5
-    , yesod-static >=1.4.0.3 && <1.6
+    , yesod >=1.6.0 && <1.7
+    , yesod-auth >=1.6.3 && <1.7
+    , yesod-core >=1.6.4 && <1.7
+    , yesod-form >=1.6.1 && <1.7
+    , yesod-static >=1.6.0 && <1.7
   other-modules:
       Main
       Paths_snamblog
@@ -171,14 +171,14 @@ executable snamblog
     , foreign-store
     , hjsmin >=0.1 && <0.3
     , hood
-    , http-conduit >=2.1 && <2.3
+    , http-conduit >=2.3 && <2.4
     , markdown
     , monad-control >=0.3 && <1.1
     , monad-logger >=0.3 && <0.4
     , mongoDB >=2.3.0.2 && <3.0
     , mtl
-    , persistent >=2.0 && <2.8
-    , persistent-mongoDB >=2.1.2 && <2.8
+    , persistent >=2.8 && <2.9
+    , persistent-mongoDB >=2.1.2 && <2.9
     , persistent-template >=2.0 && <2.8
     , resourcet
     , safe
@@ -194,11 +194,11 @@ executable snamblog
     , wai-logger >=2.2 && <2.4
     , warp >=3.0 && <3.3
     , yaml >=0.8 && <0.9
-    , yesod >=1.4.3 && <1.5
-    , yesod-auth >=1.4.0 && <1.5
-    , yesod-core >=1.4.30 && <1.5
-    , yesod-form >=1.4.0 && <1.5
-    , yesod-static >=1.4.0.3 && <1.6
+    , yesod >=1.6.0 && <1.7
+    , yesod-auth >=1.6.3 && <1.7
+    , yesod-core >=1.6.4 && <1.7
+    , yesod-form >=1.6.1 && <1.7
+    , yesod-static >=1.6.0 && <1.7
   if flag(library-only)
     buildable: False
   other-modules:
@@ -232,14 +232,14 @@ test-suite test
     , hjsmin >=0.1 && <0.3
     , hood
     , hspec >=2.0.0
-    , http-conduit >=2.1 && <2.3
+    , http-conduit >=2.3 && <2.4
     , markdown
     , monad-control >=0.3 && <1.1
     , monad-logger >=0.3 && <0.4
     , mongoDB >=2.3.0.2 && <3.0
     , mtl
-    , persistent >=2.0 && <2.8
-    , persistent-mongoDB >=2.1.2 && <2.8
+    , persistent >=2.8 && <2.9
+    , persistent-mongoDB >=2.1.2 && <2.9
     , persistent-template >=2.0 && <2.8
     , resourcet
     , safe
@@ -255,11 +255,11 @@ test-suite test
     , wai-logger >=2.2 && <2.4
     , warp >=3.0 && <3.3
     , yaml >=0.8 && <0.9
-    , yesod >=1.4.3 && <1.5
-    , yesod-auth >=1.4.0 && <1.5
-    , yesod-core >=1.4.30 && <1.5
-    , yesod-form >=1.4.0 && <1.5
-    , yesod-static >=1.4.0.3 && <1.6
+    , yesod >=1.6.0 && <1.7
+    , yesod-auth >=1.6.3 && <1.7
+    , yesod-core >=1.6.4 && <1.7
+    , yesod-form >=1.6.1 && <1.7
+    , yesod-static >=1.6.0 && <1.7
     , yesod-test
   other-modules:
       Handler.BlogSpec
