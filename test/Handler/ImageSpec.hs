@@ -61,3 +61,73 @@ spec = withApp $ do
       bucket <- runDB $ GFS.openDefaultBucket
       mFile <- runDB $ GFS.findOneFile bucket [ "filename" =: fname ]
       assertEq "image should be uploaded" (isJust mFile) True
+
+    it "supports jpeg images" $ do
+      app <- getTestYesod
+      let admin = appAdminUid $ appSettings app
+      let fname = "bat.jpg" :: String
+      adminEntity <- createUser admin
+      authenticateAs adminEntity
+
+      get ImageUploadR
+      statusIs 200
+
+      request $ do
+        setMethod "POST"
+        setUrl ImageUploadR
+        addToken
+        addRequestHeader ("accept", "application/json")
+        addFile "image" fname "image/jpeg"
+      statusIs 200
+
+      get $ ImageR (pack fname)
+      statusIs 200
+
+      assertHeader "Content-Type" "image/jpeg"
+
+
+    it "supports png images" $ do
+      app <- getTestYesod
+      let admin = appAdminUid $ appSettings app
+      let fname = "test.png" :: String
+      adminEntity <- createUser admin
+      authenticateAs adminEntity
+
+      get ImageUploadR
+      statusIs 200
+
+      request $ do
+        setMethod "POST"
+        setUrl ImageUploadR
+        addToken
+        addRequestHeader ("accept", "application/json")
+        addFile "image" fname "image/png"
+      statusIs 200
+
+      get $ ImageR (pack fname)
+      statusIs 200
+
+      assertHeader "Content-Type" "image/png"
+
+    it "supports svg images" $ do
+      app <- getTestYesod
+      let admin = appAdminUid $ appSettings app
+      let fname = "test.svg" :: String
+      adminEntity <- createUser admin
+      authenticateAs adminEntity
+
+      get ImageUploadR
+      statusIs 200
+
+      request $ do
+        setMethod "POST"
+        setUrl ImageUploadR
+        addToken
+        addRequestHeader ("accept", "application/json")
+        addFile "image" fname "image/svg"
+      statusIs 200
+
+      get $ ImageR (pack fname)
+      statusIs 200
+
+      assertHeader "Content-Type" "image/svg"

@@ -27,16 +27,24 @@ imageUploadForm = renderBootstrap3 BootstrapBasicForm $ ImageUploadForm
                                    , fsName = Just "image"
                                    , fsAttrs = [] } Nothing
 
+contentType :: Text -> ByteString
+contentType fname
+  | T.isSuffixOf ".png" fname = "image/png"
+  | T.isSuffixOf ".gif" fname = "image/gif"
+  | T.isSuffixOf ".svg" fname = "image/svg"
+  | otherwise = "image/jpeg"
+
 getImageR :: Text -> Handler TypedContent
-getImageR imageId = do
+getImageR imageId = trace ("getImageR " ++ (T.unpack imageId)) $ do
   mfile <- runDB $ do
     bucket <- GFS.openDefaultBucket
     GFS.findOneFile bucket ["filename" =: imageId]
   source <- case mfile of
     Just file -> return $ transPipe runDB (GFS.sourceFile file)
     Nothing -> return $ return ()
-  respondSource "image/jpeg" $ source .| awaitForever sendChunkBS
-
+  respondSource ct $ source .| awaitForever sendChunkBS
+  where
+    ct = contentType imageId
 
 getImageUploadR :: Handler Html
 getImageUploadR = do
